@@ -2,7 +2,7 @@
 
 **ApeAware** is a Flutter-based mobile application that detects monkey intrusions using a YOLOv8 object detection model. Designed for residential and institutional security, the app provides real-time alerts and a log of all detections using Firebase Cloud Messaging (FCM) and Firestore.
 
-### ✨ Features
+###  Features
 
 - Smart monkey detection via YOLOv8 (Python & OpenCV)
 - Real-time push notifications using Firebase Cloud Messaging
@@ -11,7 +11,7 @@
 
 ---
 
-### 📸 Screenshots
+###  Screenshots
 
 <table>
   <tr>
