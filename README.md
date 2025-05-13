@@ -1,33 +1,57 @@
-# 🐵 ApeAware
+# 🐵 ApeAware – Monkey Intrusion Alert System
 
-ApeAware is a Flutter-based mobile application that detects monkey intrusions using a YOLOv8 model and sends real-time alerts via Firebase Cloud Messaging (FCM). The app is designed for campus and residential security, offering:
+**ApeAware** is a Flutter-based mobile application that detects monkey intrusions using a YOLOv8 object detection model. Designed for residential and institutional security, the app provides real-time alerts and a log of all detections using Firebase Cloud Messaging (FCM) and Firestore.
 
--  Smart monkey detection (YOLOv8)
--  Instant push notifications on monkey detection
--  Firestore integration to log detection data
--  Call functionality for quick action
+###  Features
 
-##  Tech Stack
+- Smart monkey detection via YOLOv8 (Python & OpenCV)
+- Real-time push notifications using Firebase Cloud Messaging
+- Detection logs stored in Firestore for review
+- Quick-call feature for immediate action
 
-- Flutter (Frontend)
-- Firebase Firestore & FCM (Backend)
-- YOLOv8 (Machine Learning - Colab)
-- OpenCV & Python (Detection Pipeline)
+---
 
-##  Setup Instructions
+###  Screenshots
 
-1. Clone the repo
-2. Run `flutter pub get`
-3. Connect to Firebase (Firestore + Messaging)
-4. Deploy YOLOv8 model on Colab or server
-5. Run the app on an Android/iOS device
+<table>
+  <tr>
+    <td><img src="screenshots/zero.jpeg" width="200"/></td>
+    <td><img src="screenshots/signup.jpeg" width="200"/></td>
+    <td><img src="screenshots/login.jpeg" width="200"/></td>
+    <td><img src="screenshots/dashboards.jpeg" width="200"/></td>
+    <td><img src="screenshots/output.png" width="200"/></td>
+  </tr>
+</table>
 
-##  Folder Structure
+---
 
-- `lib/` – Flutter app source code
-- `model/` – YOLOv8 training setup (Colab)
-- `firebase/` – Firebase setup and credentials (not included in repo)
+### 🛠️ Tech Stack
 
+- **Flutter** – Mobile application frontend  
+- **Firebase** – Firestore (storage) and Cloud Messaging (notifications)  
+- **YOLOv8** – Real-time monkey detection (Python, Colab)  
+- **OpenCV** – Video processing pipeline  
 
+---
 
+### ⚙️ Setup Instructions
+
+1. Clone the repository  
+   `git clone https://github.com/your-username/apeaware.git`
+2. Install dependencies  
+   `flutter pub get`
+3. Set up Firebase (Firestore + FCM) in your project  
+4. Deploy the YOLOv8 model via Google Colab or a Python server  
+5. Run the app on a connected Android/iOS device
+
+---
 Made with ❤️ for a Minor Project @ JUIT
+
+
+
+
+
+
+
+
+
