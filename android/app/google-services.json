@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1075954505981",
+    "project_id": "apeaware-8da95",
+    "storage_bucket": "apeaware-8da95.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075954505981:android:c154fd942e736d5e894694",
+        "android_client_info": {
+          "package_name": "com.example.apeaware"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIIwq_5JIfI9OHlq8yLWsSqQ-T4SiF86Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
