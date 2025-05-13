@@ -19,6 +19,7 @@
     <td><img src="screenshots/signup.jpeg" width="200"/></td>
     <td><img src="screenshots/login.jpeg" width="200"/></td>
     <td><img src="screenshots/dashboards.jpeg" width="200"/></td>
+    <td><img src="screenshots/output.png" width="200"/></td>
   </tr>
 </table>
 
