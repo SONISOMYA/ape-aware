@@ -1,5 +1,6 @@
 import 'package:apeaware/screens/login_screen.dart';
 import 'package:apeaware/screens/dashboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -66,7 +67,7 @@ Future<void> _showNotification(RemoteMessage message) async {
     importance: Importance.max,
     priority: Priority.high,
     sound: RawResourceAndroidNotificationSound(
-        'notification'), // Add audio to res/raw
+        'notification'), 
     playSound: true,
   );
 
@@ -88,12 +89,20 @@ Future<void> _backgroundHandler(RemoteMessage message) async {
   await _showNotification(message);
 }
 
-// Get FCM token
 Future<void> getFCMToken() async {
   try {
     String? token = await FirebaseMessaging.instance.getToken();
     if (kDebugMode) {
       print("🔥 FCM Token: $token");
+    }
+
+    // Save token to Firestore for the logged-in user
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && token != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set({'fcmToken': token}, SetOptions(merge: true));
     }
   } catch (e) {
     if (kDebugMode) {
@@ -101,7 +110,6 @@ Future<void> getFCMToken() async {
     }
   }
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
