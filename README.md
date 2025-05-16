@@ -44,8 +44,7 @@
 4. Deploy the YOLOv8 model via Google Colab or a Python server  
 5. Run the app on a connected Android/iOS device
 
----
-Made with ❤️ for a Minor Project @ JUIT
+
 
 
 
