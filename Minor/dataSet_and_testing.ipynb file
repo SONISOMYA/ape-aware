@@ -1,0 +1,113 @@
+This is the ML Model
+
+https://drive.google.com/drive/folders/19lzEpqpo4mffK9B_YIv0OAGYLgrFy5Y1?usp=share_link
+
+
+## this is the testing.ipynb file
+
+# Install dependencies
+!pip install ultralytics firebase-admin opencv-python google-auth requests
+
+# Mount Google Drive
+from google.colab import drive
+drive.mount('/content/drive')
+
+# Import libraries
+import os
+import cv2
+import firebase_admin
+from firebase_admin import credentials, firestore
+from ultralytics import YOLO
+import requests
+from google.oauth2 import service_account
+import google.auth.transport.requests
+
+# Your FCM Token from the Flutter app
+fcm_token = "f-wV_wPUTyGTeyySe76mhA:APA91bENJZC0pc09uDnzM5PryZzIUBJ9GIvfigy7k9hcOn87dFCeEbqDPUS25M4yeduWRCImIqz9q4X7OvjvlhysK3CgCBxFfZPVu83JlSgrCxmTsOlYNqU"
+# Firebase project ID
+project_id = "apeaware-8da95"
+
+# Path to your service account JSON key
+service_account_file = '/content/drive/MyDrive/Minor/apeaware.json'
+
+# Step 1: Generate access token for FCM using service account
+scopes = ['https://www.googleapis.com/auth/firebase.messaging']
+credentials_g = service_account.Credentials.from_service_account_file(
+    service_account_file, scopes=scopes
+)
+auth_req = google.auth.transport.requests.Request()
+credentials_g.refresh(auth_req)
+access_token = credentials_g.token
+
+# Step 2: Function to send FCM notification
+def send_push_notification():
+    url = f"https://fcm.googleapis.com/v1/projects/{project_id}/messages:send"
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json; UTF-8',
+    }
+    message = {
+        "message": {
+            "token": fcm_token,
+            "notification": {
+                "title": "🐵 Monkey Detected!",
+                "body": "A monkey has been spotted !",
+            },
+            "android": {
+                "priority": "high",
+                "notification": {
+                    "sound": "notification"
+                }
+            }
+        }
+    }
+
+    response = requests.post(url, headers=headers, json=message)
+    print("FCM status:", response.status_code, response.text)
+
+# Step 3: Initialize Firebase Admin
+cred = credentials.Certificate(service_account_file)
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(cred)
+db = firestore.client()
+
+# Step 4: Load YOLOv8 model
+model_path = "/content/drive/MyDrive/Monkey.v11-noaugmentation.yolov8/best.pt"
+model = YOLO(model_path)
+
+# Step 5: Process video and log detections
+def process_and_log(video_file):
+    cap = cv2.VideoCapture(video_file)
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        results = model(frame, device='cpu')
+        for r in results:
+            if r.boxes is not None and len(r.boxes) > 0:
+                log_data = {
+                    "timestamp": firestore.SERVER_TIMESTAMP,
+                    "detections": []
+                }
+                for box in r.boxes:
+                    xyxy = box.xyxy[0].tolist()
+                    conf = float(box.conf[0])
+                    cls = int(box.cls[0])
+                    log_data["detections"].append({
+                        "class_id": cls,
+                        "confidence": conf,
+                        "box": xyxy
+                    })
+                db.collection("monkey_alerts").add(log_data)
+                print("Logged detection:", log_data)
+
+
+                # Send push notification
+                send_push_notification()
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+# Step 6: Run it on a video file
+video_path = "/content/drive/MyDrive/Minor/monkeys.mp4"
+process_and_log(video_path)
